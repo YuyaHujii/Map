@@ -18,6 +18,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet var fTextField: UITextField!
     var shopNumber: Int = 0
     var int num = 0
+    var int num2 = 0
     
     
     let saveData: NSUserDefaults = NSUserDefaults.standardUserDefaults()
