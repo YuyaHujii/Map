@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController {
+class MapViewController: UIViewController{
     
     var saveData: NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -42,14 +42,13 @@ class MapViewController: UIViewController {
         
         myPin.coordinate = center
         
-        myPin.title = "タイトル"
-        myPin.subtitle = "サブタイトル"
+        myPin.title = saveData.objectForKey("name") as! String
+        myPin.subtitle = saveData.objectForKey("revue") as! String
         
         mapview.addAnnotation(myPin)
         
-       
-        
     }
+        
 
 
 }

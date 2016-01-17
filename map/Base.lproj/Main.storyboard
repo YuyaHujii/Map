@@ -129,7 +129,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="CmQ-R7-XsA"/>
                     <connections>
-                        <outlet property="mapview" destination="3hS-BA-93b" id="Uov-pg-daG"/>
+                        <outlet property="mapview" destination="3hS-BA-93b" id="wnd-Sq-EpX"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pAG-Fk-tpy" userLabel="First Responder" sceneMemberID="firstResponder"/>

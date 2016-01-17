@@ -16,11 +16,19 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var adressTextField: UITextField!
-    @IBOutlet var categoryTextField: UITextField!
     @IBOutlet var revueTextField: UITextField!
+    @IBOutlet var categoryTextField: UITextField!
     @IBOutlet var webTextField: UITextField!
     @IBOutlet var hourTextField: UITextField!
     var shopNumber: Int = 0
+    
+    var nameArray: [String]
+    var latitudeArray: [Double]
+    var revueArray: [String]
+    var categoryArray: [String]
+    var webArray: [String]
+    var hourArray: [Int]
+    
     
     
     
@@ -31,15 +39,15 @@ class ViewController: UIViewController, UITextFieldDelegate{
         
         nameTextField.delegate = self
         adressTextField.delegate = self
-        revueTextField.delegate = self
         categoryTextField.delegate = self
+        revueTextField.delegate = self
         webTextField.delegate = self
         hourTextField.delegate = self
         
         nameTextField.tag = 1
         adressTextField.tag = 2
-        revueTextField.tag = 3
-        categoryTextField.tag = 4
+        categoryTextField.tag = 3
+        revueTextField.tag = 4
         webTextField.tag = 5
         hourTextField.tag = 6
         
@@ -60,12 +68,12 @@ class ViewController: UIViewController, UITextFieldDelegate{
     
     func textFieldShouldReturn(textField: UITextField) -> Bool{
         
-        var key = "ShopName"+String(shopNumber)
+        
         
         switch textField.tag
         {
         case 1:
-            saveData.setObject(textField.text, forKey: key)
+            saveData.setObject(nameTextField.text, forKey: "name")
             break
             
         case 2:
@@ -88,16 +96,17 @@ class ViewController: UIViewController, UITextFieldDelegate{
             })
             break
             
-        case 3:saveData.setObject(textField.text, forKey: key)
+        case 3:saveData.setObject(textField.text, forKey: "category")
             break
             
-        case 4:saveData.setObject(textField.text, forKey: key)
+        case 4:
+              saveData.setObject(revueTextField.text, forKey: "revue")
             break
             
-        case 5:saveData.setObject(textField.text, forKey: key)
+        case 5:saveData.setObject(textField.text, forKey: "web")
             break
             
-        case 6:saveData.setObject(textField.text, forKey: key)
+        case 6:saveData.setObject(textField.text, forKey: "hour")
             break
         default:
             break
