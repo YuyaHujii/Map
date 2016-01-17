@@ -7,37 +7,41 @@
 //
 
 import UIKit
+import MapKit
+
+
+
 
 class ViewController: UIViewController, UITextFieldDelegate{
     
-    @IBOutlet var aTextField: UITextField!
-    @IBOutlet var bTextField: UITextField!
-    @IBOutlet var cTextField: UITextField!
-    @IBOutlet var dTextField: UITextField!
-    @IBOutlet var eTextField: UITextField!
-    @IBOutlet var fTextField: UITextField!
+    @IBOutlet var nameTextField: UITextField!
+    @IBOutlet var adressTextField: UITextField!
+    @IBOutlet var categoryTextField: UITextField!
+    @IBOutlet var revueTextField: UITextField!
+    @IBOutlet var webTextField: UITextField!
+    @IBOutlet var hourTextField: UITextField!
     var shopNumber: Int = 0
-    var int num = 0
-    var int num2 = 0
+    
     
     
     let saveData: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        aTextField.delegate = self
-        bTextField.delegate = self
-        cTextField.delegate = self
-        dTextField.delegate = self
-        eTextField.delegate = self
-        fTextField.delegate = self
         
-        aTextField.tag = 1
-        bTextField.tag = 2
-        cTextField.tag = 3
-        dTextField.tag = 4
-        eTextField.tag = 5
-        fTextField.tag = 6
+        nameTextField.delegate = self
+        adressTextField.delegate = self
+        revueTextField.delegate = self
+        categoryTextField.delegate = self
+        webTextField.delegate = self
+        hourTextField.delegate = self
+        
+        nameTextField.tag = 1
+        adressTextField.tag = 2
+        revueTextField.tag = 3
+        categoryTextField.tag = 4
+        webTextField.tag = 5
+        hourTextField.tag = 6
         
         saveData.registerDefaults(["shopNumber":0])
         shopNumber = saveData.integerForKey("shopNumber")+1
@@ -51,8 +55,6 @@ class ViewController: UIViewController, UITextFieldDelegate{
     }
     
     @IBAction func OK() {
-        saveData.setObject (aTextField.text, forKey: "map")
-        saveData.synchronize()
         performSegueWithIdentifier("goMap", sender: nil)
     }
     
@@ -66,7 +68,24 @@ class ViewController: UIViewController, UITextFieldDelegate{
             saveData.setObject(textField.text, forKey: key)
             break
             
-        case 2:saveData.setObject(textField.text, forKey: key)
+        case 2:
+            
+            let address = adressTextField.text
+            let geocoder = CLGeocoder()
+            
+            geocoder.geocodeAddressString(address!, completionHandler: {(placemarks, error) -> Void in
+                if((error) != nil){
+                    print("Error", error)
+                }
+                if let placemark = placemarks?.first {
+                    let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                    print(coordinates.latitude)
+                    print(coordinates.longitude)
+                    self.saveData.setObject(coordinates.latitude, forKey: "Latitude")
+                    self.saveData.setObject(coordinates.longitude, forKey: "Longitude")
+                    
+                }
+            })
             break
             
         case 3:saveData.setObject(textField.text, forKey: key)

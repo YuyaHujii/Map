@@ -10,6 +10,8 @@ import UIKit
 import MapKit
 
 class MapViewController: UIViewController {
+    
+    var saveData: NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
     @IBOutlet var mapview: MKMapView!
     
@@ -21,10 +23,11 @@ class MapViewController: UIViewController {
         
         
         
-        let myLatitude: CLLocationDegrees = 35.68154
-        let myLongtitude:CLLocationDegrees = 139.752498
+        let myLatitude: CLLocationDegrees = self.saveData.objectForKey("Latitude") as! Double
         
-        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLatitude,myLongtitude)
+        let myLongitude:CLLocationDegrees = self.saveData.objectForKey("Longitude")as! Double
+        
+        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLatitude,myLongitude)
         
         mapview.setCenterCoordinate(center, animated: true)
         
@@ -43,6 +46,8 @@ class MapViewController: UIViewController {
         myPin.subtitle = "サブタイトル"
         
         mapview.addAnnotation(myPin)
+        
+       
         
     }
 
