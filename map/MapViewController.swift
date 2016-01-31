@@ -15,40 +15,74 @@ class MapViewController: UIViewController{
 
     @IBOutlet var mapview: MKMapView!
     
+    var shopNumber: Int = 0
+    var nameArray: [String] = []
+    var latitudeArray: [Double] = []
+    var longitudeArray: [Double] = []
+    var revueArray: [String] = []
+    var categoryArray: [String] = []
+    var webArray: [String] = []
+    var hourArray: [Int] = []
+
+    
     var myPin: MKPointAnnotation = MKPointAnnotation()
     
     override func viewDidLoad (){
         super.viewDidLoad()
         mapview.frame = self.view.frame
         
+        shopNumber = saveData.objectForKey("shopNumber") as! Int
+        print(String(shopNumber))
         
         
-        let myLatitude: CLLocationDegrees = self.saveData.objectForKey("Latitude") as! Double
         
-        let myLongitude:CLLocationDegrees = self.saveData.objectForKey("Longitude")as! Double
+        for i in 1 ... shopNumber {
+            
+            nameArray.append(self.saveData.objectForKey("name" + String(i))as! String)
+            
+            latitudeArray.append(self.saveData.objectForKey("latitude" + String(i))as! Double)
+            
+            longitudeArray.append(self.saveData.objectForKey("longitude" + String(i))as! Double)
+            
+            revueArray.append(self.saveData.objectForKey("revue" + String(i))as! String)
+            
+            categoryArray.append(self.saveData.objectForKey("category" + String(i))as! String)
+            
+            webArray.append(self.saveData.objectForKey("web" + String(i))as! String)
+            
+            hourArray.append(self.saveData.objectForKey("hour" + String(i))as! Int)
+        }
         
-        let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLatitude,myLongitude)
-        
-        mapview.setCenterCoordinate(center, animated: true)
-        
-        let mySpan: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
-        let myRegion: MKCoordinateRegion = MKCoordinateRegionMake(center, mySpan)
-        
-        
-        mapview.region = myRegion
-        
-        self.view.addSubview(mapview)
-        
-        
-        myPin.coordinate = center
-        
-        myPin.title = saveData.objectForKey("name") as! String
-        myPin.subtitle = saveData.objectForKey("revue") as! String
-        
-        mapview.addAnnotation(myPin)
+        for i in 1 ... shopNumber {
+            myPin.title = nameArray[i]
+            myPin.subtitle = revueArray[i]
+            let myLatitude: CLLocationDegrees = latitudeArray[i]
+            
+            let myLongitude:CLLocationDegrees = longitudeArray[i]
+            
+            
+            
+            let center: CLLocationCoordinate2D = CLLocationCoordinate2DMake(myLatitude,myLongitude)
+            
+            mapview.setCenterCoordinate(center, animated: true)
+            
+            let mySpan: MKCoordinateSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
+            let myRegion: MKCoordinateRegion = MKCoordinateRegionMake(center, mySpan)
+            
+            
+            mapview.region = myRegion
+            
+            self.view.addSubview(mapview)
+            
+            
+            myPin.coordinate = center
+            
+            
+            
+            mapview.addAnnotation(myPin)
+            
+        }    
         
     }
-        
-
 
 }
