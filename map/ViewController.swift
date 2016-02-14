@@ -20,6 +20,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
     @IBOutlet var hourTextField: UITextField!
     var shopNumber: Int = 0
     
+    
     var lati : Double = 0;
     var long : Double = 0;
     
@@ -43,12 +44,7 @@ class ViewController: UIViewController, UITextFieldDelegate{
         webTextField.tag = 5
         hourTextField.tag = 6
         
-        saveData.registerDefaults(["shopNumber":0])
-        shopNumber = saveData.integerForKey("shopNumber")+1
-        print("最初"+String(shopNumber))
-
         
-       
     }
     
     override func didReceiveMemoryWarning() {
@@ -57,64 +53,62 @@ class ViewController: UIViewController, UITextFieldDelegate{
     }
     @IBAction func OK(sender: AnyObject) {
         
+        saveData.registerDefaults(["shopNumber":0])
+        shopNumber = saveData.integerForKey("shopNumber")+1
+        saveData.setObject(shopNumber, forKey:"shopNumber")
+        //print("最初"+String(shopNumber))
+
+        
                 
-        print("保存前"+String(shopNumber))
-        saveData.setObject(shopNumber, forKey: "shopNumber")
+        //print("保存前"+String(shopNumber))
+        
         
         
         saveData.setObject(nameTextField.text, forKey: "name"+String(shopNumber))
-        print(nameTextField.text)
+        //print(nameTextField.text)
         
         saveData.setObject(categoryTextField.text, forKey: "category"+String(shopNumber))
-        print(categoryTextField.text)
+        //print(categoryTextField.text)
         saveData.setObject(revueTextField.text, forKey: "revue"+String(shopNumber))
-        print(revueTextField.text)
+        //print(revueTextField.text)
         saveData.setObject(webTextField.text, forKey: "web"+String(shopNumber))
-        print(webTextField.text)
+        //print(webTextField.text)
         saveData.setObject(hourTextField.text, forKey: "hour"+String(shopNumber))
-        print(hourTextField.text)
+        //print(hourTextField.text)
         
-        self.saveData.setObject(lati, forKey: "Latitude")
-        print(long)
-        self.saveData.setObject(long, forKey: "Longitude")
-        print(lati)
+        
+        
+        let address = adressTextField.text
+        let geocoder = CLGeocoder()
+        
+        geocoder.geocodeAddressString(address!, completionHandler: {(placemarks, error) -> Void in
+            if((error) != nil){
+                print("Error", error)
+            }
+            if let placemark = placemarks?.first {
+                let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
+                self.lati = coordinates.latitude
+                print(coordinates.latitude)
+                self.long = coordinates.longitude
+                print(coordinates.longitude)
+                
+                self.saveData.setObject(self.lati, forKey: "Latitude"+String(self.shopNumber))
+               
+                self.saveData.setObject(self.long, forKey: "Longitude"+String(self.shopNumber))
+                
+                 print("Longitude"+String(self.shopNumber))
+                
 
+                
+                self.performSegueWithIdentifier("go", sender: nil)
+                
+            }
+        })
 
-        
-        performSegueWithIdentifier("go", sender: nil)
-        
     }
     
     
     func textFieldShouldReturn(textField: UITextField) -> Bool{
-        
-        
-        switch textField.tag
-        {
-        
-            
-        case 2:
-            
-            let address = adressTextField.text
-            let geocoder = CLGeocoder()
-            
-            geocoder.geocodeAddressString(address!, completionHandler: {(placemarks, error) -> Void in
-                if((error) != nil){
-                    print("Error", error)
-                }
-                if let placemark = placemarks?.first {
-                    let coordinates:CLLocationCoordinate2D = placemark.location!.coordinate
-                    self.lati = coordinates.latitude
-                    print(coordinates.latitude)
-                    self.long = coordinates.longitude
-                    print(coordinates.longitude)
-                    
-                }
-            })
-            break
-        default:break
-        }
-
         
         // キーボードを閉じる
         textField.resignFirstResponder()
