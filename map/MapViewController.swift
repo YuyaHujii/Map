@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapViewController: UIViewController{
+class MapViewController: UIViewController, MKMapViewDelegate{
     
     var saveData: NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
@@ -38,12 +38,17 @@ class MapViewController: UIViewController{
         
         
         
+        
+        
+        
         if shopNumber == 1{
             var Pin = MKPointAnnotation()
             myPin.append(Pin)
             
             
             mapview.addAnnotation(myPin[0])
+            
+            
             
             myPin[0].title = saveData.objectForKey("name1") as! String
             myPin[0].subtitle = saveData.objectForKey("revue1") as! String
@@ -109,13 +114,16 @@ class MapViewController: UIViewController{
                 myPin[i-1].coordinate = center
                 
                  mapview.addAnnotation(myPin[i-1])
+                
+                
+                }
+
         }
-        }    
-        
-    }
+        }
+    
+
     
     @IBAction func back(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
-    
 }
