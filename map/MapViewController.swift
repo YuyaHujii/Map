@@ -121,6 +121,34 @@ class MapViewController: UIViewController, MKMapViewDelegate{
         }
         }
     
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+    if annotation is MKUserLocation {
+    return nil
+    }
+    
+    let reuseId = "pin"
+    var pinView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
+    if pinView == nil {
+    pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+    pinView?.animatesDrop = true
+        
+    pinView?.canShowCallout = true
+    let rightButton: AnyObject! = UIButton(type: UIButtonType.DetailDisclosure)
+    pinView?.rightCalloutAccessoryView = rightButton as? UIView
+        
+        func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+            print(__FUNCTION__)
+    }
+
+    }
+    else {
+    pinView?.annotation = annotation
+    }
+    
+    return pinView
+    }
+
+    
 
     
     @IBAction func back(sender: AnyObject) {
